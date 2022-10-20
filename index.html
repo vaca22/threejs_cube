@@ -21,13 +21,57 @@
 
         const scene = new THREE.Scene();
 
-        const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-        const material = new THREE.MeshNormalMaterial();
 
-        const mesh = new THREE.Mesh( geometry, material );
-        scene.add( mesh );
+        const planeGeometry = new THREE.PlaneGeometry(16, 12);
+        const planeMaterial = new THREE.MeshLambertMaterial({color: 0xAAAAAA});
+
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -0.1 * Math.PI;
+        plane.position.set(0, 0,-8);
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+
+        const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const cubeMaterial = new THREE.MeshLambertMaterial({color: 0xFF0000});
+
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(0, 2, -8);
+        cube.castShadow = true;
+        scene.add(cube);
+        // const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+        // const material = new THREE.MeshNormalMaterial();
+        //
+        // const mesh = new THREE.Mesh( geometry, material );
+        // scene.add( mesh );
+
+        const sphereGeometry = new THREE.SphereGeometry(0.6, 100, 100);
+
+        const sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+
+        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+        sphere.position.set(2, 1, -4);
+        sphere.castShadow = true;
+        scene.add(sphere);
+
+
+
+
+
+
+
+        const spotLight = new THREE.SpotLight(0xFFFFFF);
+        spotLight.position.set(0,30,30);
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize = new THREE.Vector2(1024, 1024);
+        spotLight.shadow.camera.far = 130;
+        spotLight.shadow.camera.near = 40;
+        scene.add(spotLight);
+
 
         const renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.shadowMap.enabled = true;
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
         document.body.appendChild( renderer.domElement );
@@ -35,8 +79,7 @@
 
         function animation( time ) {
 
-            mesh.rotation.x = time / 2000;
-            mesh.rotation.y = time / 1000;
+
 
             renderer.render( scene, camera );
 
